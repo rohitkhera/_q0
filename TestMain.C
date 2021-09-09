@@ -194,7 +194,7 @@ int BLASTMatrixTest8()
 
   FileOps fops;
   unsigned char data[] = { 0xba, 0x4f, 0x20, 0x3b };
-  unsigned char buffer[4];
+  unsigned char buffer[] = { 0x00, 0x00, 0x00, 0x00 };
   int buflen = 4;
 
   std::vector<FileToKeyByteMap> keyMap;

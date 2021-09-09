@@ -4,7 +4,7 @@
 
 #include "BLASTMatrix.h"
 #include <iostream>
-
+#include <cstdio>
 
 /* read the ith byte in the key */
 
@@ -98,13 +98,15 @@ int BLASTMatrix::readRangePartial(const long startIndex, const long endIndex, co
 
   long linearStartIndex = (row * columns) + startIndex;
   long linearEndIndex = (row * columns) + endIndex;
-  long fileStartIndex = linearStartIndex;
+  long fileLocalStartIndex = linearStartIndex;
+  long curBufferIndex = 0;
   std::vector<FileToKeyByteMap> outMap;
+
   
   getFileMapsforByteRange(linearStartIndex, linearEndIndex, keyMap, outMap);
   FILE * fp = NULL;
   
-  for(int i = 0; i < outMap.size(); i++)
+  for(int i = 0; i < 1; i++)
     {
       
       fp = fopen(outMap[i].filename.c_str(), "r");
@@ -113,7 +115,18 @@ int BLASTMatrix::readRangePartial(const long startIndex, const long endIndex, co
 	  std::cerr << outMap[i].filename << " : File not found" << std::endl;
 	  return 0;
 	}
-      //fseek(fp, index - map->startByteIndex, SEEK_SET);
+
+      //outMap[i].print();
+      long readStart = fileLocalStartIndex - outMap[i].startByteIndex;
+      fseek(fp, readStart, SEEK_SET); //17 - 14 = 3
+      if(outMap[i].endByteIndex <= linearEndIndex)
+	{
+	  long len = fread(buffer + curBufferIndex, 1, outMap[i].endByteIndex - fileLocalStartIndex, fp);
+	  curBufferIndex += len;
+	  std::cout << "ReadStart = " << readStart << " : len " << len << " : curBufferIndex " << curBufferIndex << std::endl;
+	  std::cout << "outMap[i].endByteIndex : " << outMap[i].endByteIndex << " : fileLocalStartIndex : " << fileLocalStartIndex << std::endl;
+	  
+	}
 
     }
 
