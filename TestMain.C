@@ -202,7 +202,38 @@ int BLASTMatrixTest8()
   fops.fileChecks(fileset2, keyMap);
 
   BLASTMatrix bm(35, 5);
-  bm.readRangePartial(3, 6, 2, keyMap, buffer, buflen);
+  bm.readLinearRange(3, 6, 2, keyMap, buffer, buflen);
+
+  int n = memcmp(data, buffer, sizeof(buffer));
+  if(n != 0)
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+
+}
+
+
+/* Read information from the 0th byte to the 1st byte of the 3rd row */
+
+int BLASTMatrixTest9()
+{
+
+
+  FileOps fops;
+  unsigned char data[] = { 0xb8, 0x08 };
+  unsigned char buffer[] = { 0x00, 0x00 };
+  int buflen = 2;
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  bm.readLinearRange(0, 1, 3, keyMap, buffer, buflen);
+
+  int n = memcmp (data, buffer, sizeof(buffer));
+  if(n != 0)
+    return EXIT_FAILURE;
   
   return EXIT_SUCCESS;
 
@@ -393,6 +424,9 @@ int main(int argc, char **argv)
 
   std::cout << "BLASTMatrixTest8" << std::endl;  
   assert(BLASTMatrixTest8() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest9" << std::endl;  
+  assert(BLASTMatrixTest9() == EXIT_SUCCESS);
   
   std::cout << "----------- END TESTS ------------\n" << std::endl;
   return 0;

@@ -93,12 +93,12 @@ void BLASTMatrix::getFileMapsforByteRange(const long linearStartIndex, const lon
 
 /* The semnatics of this function require that it not  receive an end index that overshoots the row */
 
-int BLASTMatrix::readRangePartial(const long startIndex, const long endIndex, const long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer, const long buflen)
+int BLASTMatrix::readLinearRange(const long startIndex, const long endIndex, const long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer, const long buflen)
 {
 
   long linearStartIndex = (row * columns) + startIndex;
   long linearEndIndex = (row * columns) + endIndex;
-  long fileLocalStartIndex = linearStartIndex;
+  long fileStartIndex = linearStartIndex;
   long curBufferIndex = 0;
   std::vector<FileToKeyByteMap> outMap;
 
@@ -106,7 +106,7 @@ int BLASTMatrix::readRangePartial(const long startIndex, const long endIndex, co
   getFileMapsforByteRange(linearStartIndex, linearEndIndex, keyMap, outMap);
   FILE * fp = NULL;
   
-  for(int i = 0; i < 1; i++)
+  for(int i = 0; i < outMap.size(); i++)
     {
       
       fp = fopen(outMap[i].filename.c_str(), "r");
@@ -116,18 +116,30 @@ int BLASTMatrix::readRangePartial(const long startIndex, const long endIndex, co
 	  return 0;
 	}
 
-      //outMap[i].print();
-      long readStart = fileLocalStartIndex - outMap[i].startByteIndex;
-      fseek(fp, readStart, SEEK_SET); //17 - 14 = 3
-      if(outMap[i].endByteIndex <= linearEndIndex)
+
+      long readStart = fileStartIndex - outMap[i].startByteIndex;
+      long len = 0;
+      fseek(fp, readStart, SEEK_SET); 
+      if(outMap[i].endByteIndex <= linearEndIndex) //Entirely read the residual range in this file
 	{
-	  long len = fread(buffer + curBufferIndex, 1, outMap[i].endByteIndex - fileLocalStartIndex, fp);
-	  curBufferIndex += len;
+	  len = fread(buffer + curBufferIndex, 1, outMap[i].endByteIndex - fileStartIndex + 1, fp);
+	  /*
+	  std::cout << "---------------------------------------" << std::endl;
+	  std::cout << "linearStartIndex : " << linearStartIndex << std::endl;	  
+	  std::cout << "linearEndIndex : " << linearEndIndex << std::endl;
+	  std::cout << "outMap[i].endByteIndex : " << outMap[i].endByteIndex << std::endl;	  	  
 	  std::cout << "ReadStart = " << readStart << " : len " << len << " : curBufferIndex " << curBufferIndex << std::endl;
-	  std::cout << "outMap[i].endByteIndex : " << outMap[i].endByteIndex << " : fileLocalStartIndex : " << fileLocalStartIndex << std::endl;
+	  std::cout << "outMap[i].endByteIndex : " << outMap[i].endByteIndex << " : fileStartIndex : " << fileStartIndex << std::endl;
+	  */
+
+	  fileStartIndex += len;
+	  curBufferIndex += len;
 	  
 	}
-
+      else //This is the last partial read that is required for the specified range
+	{
+	  len = fread(buffer + curBufferIndex, 1, linearEndIndex - fileStartIndex + 1, fp);
+	}
     }
 
   return EXIT_SUCCESS;
