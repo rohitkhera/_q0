@@ -1,5 +1,5 @@
 /*
- * Implment the BLAST Matrix through file operations
+ * Implement the BLAST Matrix through file operations
  */
 
 #include "BLASTMatrix.h"
