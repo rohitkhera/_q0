@@ -1,0 +1,338 @@
+/**************************************************************
+ *
+ * TestMain.C - test entry point
+ *
+ **************************************************************/
+#include "FileOps.h"
+#include <cassert>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include "TestCommon.h"
+#include "BLASTMatrix.h"
+
+
+/* Get the 21st byte of the key by explicitly specifying and opening the file containtng this byte */
+
+int BLASTMatrixTest1()
+{
+  
+  FileToKeyByteMap map;
+  unsigned char c = map.getNthByte("keyData/small/KeyData_5.dat", 0);
+
+  if(c != 0xb8 )
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+
+}
+
+
+
+/* Get the 21st byte of the key without explicitly speficying the file */
+
+int BLASTMatrixTest2()
+{
+
+
+  FileOps fops;
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  unsigned char c = bm.readIthByte(21, keyMap);
+  
+  if(c != 0xb8 )
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+
+}
+
+
+/* Get the 15th byte of the key without explicitly speficying the file */
+
+int BLASTMatrixTest3()
+{
+
+
+  FileOps fops;
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  unsigned char c = bm.readIthByte(15, keyMap);
+  
+  if(c != 0x7f )
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+
+}
+
+
+/* Get the 3rd byte from the 1st  row */
+
+int BLASTMatrixTest4()
+{
+
+
+  FileOps fops;
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  unsigned char c = bm.IthByteInJthRow(3, 1, keyMap);
+  
+  if(c != 0xf6 )
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+
+}
+
+
+/* Get the 6th byte from the 3rd  row */
+
+int BLASTMatrixTest5()
+{
+
+
+  FileOps fops;
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  unsigned char c = bm.IthByteInJthRow(6, 3, keyMap);
+  
+  if(c != 0x5b )
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+
+}
+
+/* Read information from the 3rd byte to the 6th byte of the second row */
+
+int BLASTMatrixTest6()
+{
+
+
+  FileOps fops;
+  unsigned char data[] = { 0xba, 0x4f, 0x20, 0x3b };
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+
+  
+  //if(c != 0x5b )
+  //return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+
+}
+
+
+
+
+/* Ensure that the total size of the file is n bytes */
+
+int fileOpsTest1(const long n)
+{
+  FileOps fops;
+
+  std::vector<FileToKeyByteMap> keyMap;
+
+  fops.populateKeyMap(fileset1.size(), keyMap);  
+
+  if(fops.fileChecks(fileset1, keyMap) != n)
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+}
+
+
+/* Verify Key Mapping to files */
+
+int fileOpsTest2()
+{
+  FileOps fops;
+
+  std::vector<FileToKeyByteMap> keyMap;
+
+  fops.populateKeyMap(fileset1.size(), keyMap);  
+  fops.fileChecks(fileset1, keyMap);
+  
+  if(keyMap[0].startByteIndex != 0)
+    return EXIT_FAILURE;
+
+  if(keyMap[0].endByteIndex != 99999)
+    return EXIT_FAILURE;
+
+  if(keyMap[1].startByteIndex != 100000)
+    return EXIT_FAILURE;
+
+  if(keyMap[1].endByteIndex != 145000)
+    return EXIT_FAILURE;
+
+  if(keyMap[2].startByteIndex != 145001)
+    return EXIT_FAILURE;
+
+  if(keyMap[2].endByteIndex != 199999)
+    return EXIT_FAILURE;  
+
+
+  return EXIT_SUCCESS;
+}
+
+/* Verify nth byte in a file */
+
+int fileOpsTest3()
+{
+
+  FileToKeyByteMap map;
+  unsigned char c = map.getNthByte("keyData/KeyData_0.dat", 199999);
+  if(c != 'f')
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+
+}
+
+/* Verify Key Mapping to files */
+
+int fileOpsTest4()
+{
+
+    FileOps fops;
+
+  std::vector<FileToKeyByteMap> keyMap;
+
+  fops.populateKeyMap(fileset2.size(), keyMap);  
+  fops.fileChecks(fileset2, keyMap);
+  
+  if(keyMap[0].startByteIndex != 0)
+    return EXIT_FAILURE;
+
+  if(keyMap[0].endByteIndex != 3)
+    return EXIT_FAILURE;
+
+  if(keyMap[1].startByteIndex != 4)
+    return EXIT_FAILURE;
+
+  if(keyMap[1].endByteIndex != 10)
+    return EXIT_FAILURE;
+
+  if(keyMap[2].startByteIndex != 11)
+    return EXIT_FAILURE;
+
+  if(keyMap[2].endByteIndex != 13)
+    return EXIT_FAILURE;
+  
+  if(keyMap[3].startByteIndex != 14)
+    return EXIT_FAILURE;
+
+  if(keyMap[3].endByteIndex != 18)
+    return EXIT_FAILURE;
+
+  if(keyMap[4].startByteIndex != 19)
+    return EXIT_FAILURE;
+
+  if(keyMap[4].endByteIndex != 20)
+    return EXIT_FAILURE;
+
+  if(keyMap[5].startByteIndex != 21)
+    return EXIT_FAILURE;
+
+  if(keyMap[5].endByteIndex != 21)
+    return EXIT_FAILURE;  
+
+  if(keyMap[6].startByteIndex != 22)
+    return EXIT_FAILURE;
+
+  if(keyMap[6].endByteIndex != 29)
+    return EXIT_FAILURE;
+
+  if(keyMap[7].startByteIndex != 30)
+    return EXIT_FAILURE;
+
+  if(keyMap[7].endByteIndex != 34)
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
+
+
+}
+  
+int main(int argc, char **argv)
+{
+
+  fileset1.push_back("keydata/big/KeyData_0.dat");
+  fileset1.push_back("keydata/big/KeyData_1.dat");
+  fileset1.push_back("keydata/big/KeyData_2.dat");
+
+  fileset2.push_back("keydata/small/KeyData_0.dat");
+  fileset2.push_back("keydata/small/KeyData_1.dat");
+  fileset2.push_back("keydata/small/KeyData_2.dat");
+  fileset2.push_back("keydata/small/KeyData_3.dat");
+  fileset2.push_back("keydata/small/KeyData_4.dat");
+  fileset2.push_back("keydata/small/KeyData_5.dat");
+  fileset2.push_back("keydata/small/KeyData_6.dat");
+  fileset2.push_back("keydata/small/KeyData_7.dat");
+
+  std::cout << "\n---------- START TESTS -----------" << std::endl;
+  
+  std::cout << "fileopsTest1" << std::endl;
+  assert(fileOpsTest1(200000) == EXIT_SUCCESS);
+
+  std::cout << "fileopsTest2" << std::endl;  
+  assert(fileOpsTest2() == EXIT_SUCCESS);
+
+  std::cout << "fileopsTest3" << std::endl;  
+  assert(fileOpsTest3() == EXIT_SUCCESS);
+
+  std::cout << "fileopsTest4" << std::endl;  
+  assert(fileOpsTest4() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest1" << std::endl;  
+  assert(BLASTMatrixTest1() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest2" << std::endl;  
+  assert(BLASTMatrixTest2() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest3" << std::endl;  
+  assert(BLASTMatrixTest3() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest4" << std::endl;  
+  assert(BLASTMatrixTest4() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest5" << std::endl;  
+  assert(BLASTMatrixTest5() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest6" << std::endl;  
+  assert(BLASTMatrixTest6() == EXIT_SUCCESS);
+  
+  std::cout << "----------- END TESTS ------------\n" << std::endl;
+  return 0;
+
+}
+  
+
+
+
+
+
+
