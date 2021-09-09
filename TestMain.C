@@ -130,9 +130,6 @@ int BLASTMatrixTest6()
 
   FileOps fops;
 
-  unsigned char buffer[4];
-  int buflen = 4;
-
   std::vector<FileToKeyByteMap> keyMap;
   fops.populateKeyMap(fileset2.size(), keyMap);
   fops.fileChecks(fileset2, keyMap);
@@ -144,7 +141,7 @@ int BLASTMatrixTest6()
   std::vector<FileToKeyByteMap> outMap;
   bm.getFileMapsforByteRange(linearStartIndex, linearEndIndex, keyMap, outMap);
   
-  if(outMap.size() !=2)
+  if(outMap.size() != 2)
     return EXIT_FAILURE;
 
   if(outMap[0].filename != "keydata/small/KeyData_3.dat")
@@ -157,10 +154,41 @@ int BLASTMatrixTest6()
 
 }
 
+/* Verify file mapping for the following range - 0th byte to the 0th byte of the third row */
+
+int BLASTMatrixTest7()
+{
+
+
+  FileOps fops;
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  long linearStartIndex = (3 * 7) + 0; // (row * col) + startIndex;
+  long linearEndIndex = (3 * 7) + 0; // (row * col) + endIndex;
+  
+  std::vector<FileToKeyByteMap> outMap;
+  bm.getFileMapsforByteRange(linearStartIndex, linearEndIndex, keyMap, outMap);
+  
+  if(outMap.size() != 1)
+    return EXIT_FAILURE;
+
+  if(outMap[0].filename != "keydata/small/KeyData_5.dat")
+    return EXIT_FAILURE;
+
+  
+  return EXIT_SUCCESS;
+
+}
+
+
 
 /* Read information from the 3rd byte to the 6th byte of the second row */
 
-int BLASTMatrixTest7()
+int BLASTMatrixTest8()
 {
 
 
@@ -363,6 +391,9 @@ int main(int argc, char **argv)
   std::cout << "BLASTMatrixTest7" << std::endl;  
   assert(BLASTMatrixTest7() == EXIT_SUCCESS);
 
+  std::cout << "BLASTMatrixTest8" << std::endl;  
+  assert(BLASTMatrixTest8() == EXIT_SUCCESS);
+  
   std::cout << "----------- END TESTS ------------\n" << std::endl;
   return 0;
 

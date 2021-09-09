@@ -91,17 +91,32 @@ void BLASTMatrix::getFileMapsforByteRange(const long linearStartIndex, const lon
 }
 
 
-/* This function is guranteed not to receive an end index that overshoots the row */
+/* The semnatics of this function require that it not  receive an end index that overshoots the row */
 
 int BLASTMatrix::readRangePartial(const long startIndex, const long endIndex, const long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer, const long buflen)
 {
 
   long linearStartIndex = (row * columns) + startIndex;
   long linearEndIndex = (row * columns) + endIndex;
-
+  long fileStartIndex = linearStartIndex;
   std::vector<FileToKeyByteMap> outMap;
   
   getFileMapsforByteRange(linearStartIndex, linearEndIndex, keyMap, outMap);
+  FILE * fp = NULL;
+  
+  for(int i = 0; i < outMap.size(); i++)
+    {
+      
+      fp = fopen(outMap[i].filename.c_str(), "r");
+      if(fp == NULL)
+	{
+	  std::cerr << outMap[i].filename << " : File not found" << std::endl;
+	  return 0;
+	}
+      //fseek(fp, index - map->startByteIndex, SEEK_SET);
+
+    }
+
   return EXIT_SUCCESS;
 
 }
