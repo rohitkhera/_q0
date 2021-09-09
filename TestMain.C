@@ -240,6 +240,33 @@ int BLASTMatrixTest9()
 }
 
 
+/* Read information from the 0th byte to the 6th byte of the 4th row */
+
+int BLASTMatrixTest10()
+{
+
+
+  FileOps fops;
+  unsigned char data[] = { 0xee, 0x5b, 0x44,0x70, 0xe6, 0xab, 0x52 };
+  unsigned char buffer[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+  int buflen = 2;
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  bm.readLinearRange(0, 6, 4, keyMap, buffer, buflen);
+
+  int n = memcmp (data, buffer, sizeof(buffer));
+  if(n != 0)
+    return EXIT_FAILURE;
+  
+  return EXIT_SUCCESS;
+
+}
+
+
 
 
 /* Ensure that the total size of the file is n bytes */
@@ -427,7 +454,10 @@ int main(int argc, char **argv)
 
   std::cout << "BLASTMatrixTest9" << std::endl;  
   assert(BLASTMatrixTest9() == EXIT_SUCCESS);
-  
+
+  std::cout << "BLASTMatrixTest10" << std::endl;  
+  assert(BLASTMatrixTest10() == EXIT_SUCCESS);
+    
   std::cout << "----------- END TESTS ------------\n" << std::endl;
   return 0;
 
