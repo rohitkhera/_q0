@@ -2,10 +2,10 @@
  *
  * Local sampler with probe compleity p. Samples p bytes 
  * from a key X of length n bytes where X is represented as a 
- * matrix with c rows and n/c columns sunject to the constraint 
+ * matrix with c rows and n/c columns subject to the constraint 
  * that c divides p without remainder and that n, c and p and 
  * +ve integers
- * Assume that the input binary formatfiles containing the key X have 
+ * Assume that the input binary format files containing the key X have 
  * variable length but that the total number of bytes in all the files is n. 
  * This recipe implements a random access facility for reading 
  * data from random ranges of bytes in the files. 
