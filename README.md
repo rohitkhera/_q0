@@ -11,7 +11,7 @@ The IND-CCA game used in the reductions is a hybrid consisting of
 
 (ii) A computationally unbounded Information Theoretic adversary A_2 that is given the seed after access to the shared server T is removed. The security reduction utilizes linear algebra based arguments. 
 
-During the extraction phase (not implemented here), the goal is to take non random (leaked) and random bits in the sample and mix them to produce a truly random string. The extraction method utilized is able to extract more entropy (more extracted random bits) from the sample than what is implied by the leftover hash lemma given some bounded amount of leakage of the sampled bits 
+During the extraction phase (not implemented here), the goal is to take non random (leaked) and random bits in the sample and mix them to produce a truly random string. The recipe for the extractor involves instantiating a family of matrices  A_1, . . . , A_m and computing an extraction as the dot product X ·(A_1S), . . . , X ·(A_mS) where A_iS is the matrix-vector of the ith matrix and the seed S. The underlying arithmetic is field multiplication, presumably over some fixed representation of GF(256) since the underlying data is represented as bytes. It's claimed that the extraction method utilized is able to extract more entropy (more extracted random bits) from the sample than what is implied by the leftover hash lemma given some bounded amount of leakage of the sampled bits 
 
 Implementation 
 
@@ -38,7 +38,7 @@ An example test case is depicted below
 
    ee 5b 44 70 e6 ab 52   
 
-The sampler reads and concatenates bytes from each row in the above matrix based on the following seed vector { 5, 0, 2, 6, 4 }. The memory complexity for the sampler is O(p) and the data is read from the following input files of unequal length:
+The sampler reads and concatenates bytes from each row in the above matrix based on the following seed vector { 5, 0, 2, 6, 4 } (You may confirm that the correct sample for this above consists of the 15 element vector { 0xb8, 0x48, 0xa4, 0x3b, 0x1f, 0x8a, 0xfd, 0xba, 0x4f, 0x5b, 0xb8, 0x08, 0xe6, 0xab, 0x52 }). The memory complexity for the sampler is O(p) and the data is read from the following input files of unequal length:
 
 KeyData_0.dat - containing 4 bytes
 
