@@ -157,11 +157,8 @@ int BLASTMatrix::readModularRange(const long startIndex, const long numBytes, co
       readLinearRange(startIndex, columns, row, keyMap, buffer);
       long wrappedLastIndex = numBytes - (columns - startIndex);
 
-
-      //printf("len = %lu :  wrappedLastIndex = %ld\n", len, wrappedLastIndex);
       readLinearRange(0, wrappedLastIndex, row, keyMap, buffer + resLen); 
 
-      //printf("%.02x %.02x %.02x %.02x %.02x %.02x\n", buffer[0], buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]);
     }
   else
     {
@@ -171,3 +168,4 @@ int BLASTMatrix::readModularRange(const long startIndex, const long numBytes, co
   return EXIT_SUCCESS;
 
 }
+

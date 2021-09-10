@@ -291,7 +291,7 @@ int BLASTMatrixTest11()
 
 }
 
-/* Read 6 bytes starting from the 6th position in the 4th row */
+/* Read 6 non contigous bytes starting from the 6th position in the 4th row */
 
 int BLASTMatrixTest12()
 {
@@ -318,7 +318,7 @@ int BLASTMatrixTest12()
 }
 
 
-/* Read 3 bytes starting from the 5th position in the 1st row */
+/* Read 3 non contigous bytes starting from the 5th position in the 1st row */
 
 int BLASTMatrixTest13()
 {
@@ -335,6 +335,58 @@ int BLASTMatrixTest13()
 
   BLASTMatrix bm(35, 5);
   bm.readModularRange(5, 3, 1, keyMap, buffer);
+  
+  int n = memcmp (data, buffer, sizeof(buffer));
+  if(n != 0)
+    return EXIT_FAILURE;
+  
+  return EXIT_SUCCESS;
+
+}
+
+/* Read 4 contigous bytes starting from the 1st  position in the 3rd  row */
+
+int BLASTMatrixTest14()
+{
+
+
+  FileOps fops;
+  unsigned char data[] = { 0x08, 0x65, 0x2b, 0x16 };
+  unsigned char buffer[] = { 0x00, 0x00, 0x00, 0x00 };
+
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  bm.readModularRange(1, 4, 3, keyMap, buffer);
+  
+  int n = memcmp (data, buffer, sizeof(buffer));
+  if(n != 0)
+    return EXIT_FAILURE;
+  
+  return EXIT_SUCCESS;
+
+}
+
+/* Read 2 contigous byte starting from the 5th  position in the zeroth  row */
+
+int BLASTMatrixTest15()
+{
+
+
+  FileOps fops;
+  unsigned char data[] = { 0xb8, 0x48 };
+  unsigned char buffer[] = { 0x00, 0x00 };
+
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  bm.readModularRange(5, 2, 0, keyMap, buffer);
   
   int n = memcmp (data, buffer, sizeof(buffer));
   if(n != 0)
@@ -544,6 +596,12 @@ int main(int argc, char **argv)
 
   std::cout << "BLASTMatrixTest13" << std::endl;  
   assert(BLASTMatrixTest13() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest14" << std::endl;  
+  assert(BLASTMatrixTest14() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest15" << std::endl;  
+  assert(BLASTMatrixTest15() == EXIT_SUCCESS);
   
   std::cout << "----------- END TESTS ------------\n" << std::endl;
   return 0;
