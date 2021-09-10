@@ -140,7 +140,6 @@ int BLASTMatrix::readLinearRange(const unsigned long startIndex, const unsigned 
 int BLASTMatrix::readModularRange(const unsigned long startIndex, const unsigned long numBytes, const unsigned long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer)
 {
 
-  size_t len = 0;
   if(startIndex + numBytes > columns)
     {
 

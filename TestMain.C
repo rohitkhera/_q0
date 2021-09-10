@@ -17,7 +17,7 @@
 
 /******************************************************* 
 
-   Local sampler for n = 35, c = 5 adn p = 15 
+   Local sampler for n = 35, c = 5 and p = 15 
    from the following 5 by 7 matrix :
 
    
@@ -35,7 +35,7 @@
 
    ee 5b 44 70 e6 ab 52   
 
-   The sampler reads and concatentes bytes from each 
+   The sampler reads and concatenates bytes from each 
    row in the above matrix based on the seed vector
    { 5, 0, 2, 6, 4 }.
 
@@ -49,7 +49,7 @@ int BLASTMatrixTest0()
   FileOps fops;
   unsigned char data[] = { 0xb8, 0x48, 0xa4, 0x3b, 0x1f, 0x8a, 0xfd, 0xba, 0x4f, 0x5b, 0xb8, 0x08, 0xe6, 0xab, 0x52 };
   unsigned char buffer[15] = { 0x00 };
-  int seed[5] = { 5, 0, 2, 6, 4 };
+  unsigned int seed[5] = { 5, 0, 2, 6, 4 };
 
   LocalSampler ls;
   unsigned long total = ls.sample(35, 15, seed, 5, fileset2, buffer);

@@ -16,7 +16,7 @@
 #include "FileOps.h"
 #include "BLASTMatrix.h"
 
-unsigned long LocalSampler::sample(const unsigned long n, const unsigned long p, const int *seed, const int seedLen, const std::vector<std::string> files, unsigned char* buffer)
+unsigned long LocalSampler::sample(const unsigned long n, const unsigned long p, const unsigned int *seed, const unsigned int seedLen, const std::vector<std::string> files, unsigned char* buffer)
 {
 
   FileOps fops;
