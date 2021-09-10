@@ -4,7 +4,7 @@
 
 #include "BLASTMatrix.h"
 #include <iostream>
-#include <cstdio>
+
 
 /* read the ith byte in the key */
 
