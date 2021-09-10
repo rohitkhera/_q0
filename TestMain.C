@@ -12,6 +12,56 @@
 #include <cstdio>
 #include "TestCommon.h"
 #include "BLASTMatrix.h"
+#include "LocalSampler.h"
+
+
+/******************************************************* 
+
+   Local sampler for n = 35, c = 5 adn p = 15 
+   from the following 5 by 7 matrix :
+
+   
+   a4 cf dd 84 f4 b8 48
+
+
+   3b 1f 8a f6 c3 7c 79
+
+
+   2c 7f fd ba 4f 20 3b 
+
+
+   b8 08 65 2b 16 a6 5b  
+
+
+   ee 5b 44 70 e6 ab 52   
+
+   The sampler reads and concatentes bytes from each 
+   row in the above matrix based on the seed vector
+   { 5, 0, 2, 6, 4 }.
+
+******************************************************/
+
+
+int BLASTMatrixTest0()
+{
+
+
+  FileOps fops;
+  unsigned char data[] = { 0xb8, 0x48, 0xa4, 0x3b, 0x1f, 0x8a, 0xfd, 0xba, 0x4f, 0x5b, 0xb8, 0x08, 0xe6, 0xab, 0x52 };
+  unsigned char buffer[15] = { 0x00 };
+  int seed[5] = { 5, 0, 2, 6, 4 };
+
+  LocalSampler ls;
+  unsigned long total = ls.sample(35, 15, seed, 5, fileset2, buffer);
+  
+  int n = memcmp (data, buffer, sizeof(buffer));
+  if(n != 0)
+    return EXIT_FAILURE;
+  
+  return EXIT_SUCCESS;
+
+}
+
 
 
 /* Get the 21st byte of the key by explicitly specifying and opening the file containtng this byte */
@@ -401,7 +451,7 @@ int BLASTMatrixTest15()
 
 /* Ensure that the total size of the file is n bytes */
 
-int fileOpsTest1(const long n)
+int fileOpsTest0(const long n)
 {
   FileOps fops;
 
@@ -418,7 +468,7 @@ int fileOpsTest1(const long n)
 
 /* Verify Key Mapping to files */
 
-int fileOpsTest2()
+int fileOpsTest1()
 {
   FileOps fops;
 
@@ -451,7 +501,7 @@ int fileOpsTest2()
 
 /* Verify nth byte in a file */
 
-int fileOpsTest3()
+int fileOpsTest2()
 {
 
   FileToKeyByteMap map;
@@ -465,7 +515,7 @@ int fileOpsTest3()
 
 /* Verify Key Mapping to files */
 
-int fileOpsTest4()
+int fileOpsTest3()
 {
 
     FileOps fops;
@@ -546,8 +596,11 @@ int main(int argc, char **argv)
 
   std::cout << "\n---------- START TESTS -----------" << std::endl;
   
-  std::cout << "fileopsTest1" << std::endl;
-  assert(fileOpsTest1(200000) == EXIT_SUCCESS);
+  std::cout << "fileopsTest0" << std::endl;
+  assert(fileOpsTest0(200000) == EXIT_SUCCESS);
+
+  std::cout << "fileopsTest1" << std::endl;  
+  assert(fileOpsTest1() == EXIT_SUCCESS);
 
   std::cout << "fileopsTest2" << std::endl;  
   assert(fileOpsTest2() == EXIT_SUCCESS);
@@ -555,9 +608,9 @@ int main(int argc, char **argv)
   std::cout << "fileopsTest3" << std::endl;  
   assert(fileOpsTest3() == EXIT_SUCCESS);
 
-  std::cout << "fileopsTest4" << std::endl;  
-  assert(fileOpsTest4() == EXIT_SUCCESS);
-
+  std::cout << "BLASTMatrixTest0" << std::endl;  
+  assert(BLASTMatrixTest0() == EXIT_SUCCESS);
+  
   std::cout << "BLASTMatrixTest1" << std::endl;  
   assert(BLASTMatrixTest1() == EXIT_SUCCESS);
 
@@ -602,7 +655,7 @@ int main(int argc, char **argv)
 
   std::cout << "BLASTMatrixTest15" << std::endl;  
   assert(BLASTMatrixTest15() == EXIT_SUCCESS);
-  
+
   std::cout << "----------- END TESTS ------------\n" << std::endl;
   return 0;
 

@@ -1,10 +1,17 @@
-/**************************************************************
+/***************************************************************************
  *
  * Local sampler with probe compleity p. Samples p bytes 
- * from a key X of length n bytes where X is a represented as a 
- * matrix with c rows and n/c columns .
- * 
- **************************************************************/
+ * from a key X of length n bytes where X is represented as a 
+ * matrix with c rows and n/c columns sunject to the constraint 
+ * that c divides p without remainder and that n, c and p and 
+ * +ve integers
+ * Assume that the input binary formatfiles containing the key X have 
+ * variable length but that the total number of bytes in all the files is n. 
+ * This recipe implements a random access facility for reading 
+ * data from random ranges of bytes in the files. 
+ *
+ ***************************************************************************/
+
 #ifndef HDR_BLAST_SAMPLER_H
 #define HDR_BLAST_SAMPLER_H 
 
@@ -17,7 +24,7 @@ class LocalSampler
 
  public:
   LocalSampler() {};
-  int sample(const unsigned long n, const unsigned long p, const std::vector<long> seed, const std::vector<std::string> files, unsigned char* buffer);
+  unsigned long sample(const unsigned long n, const unsigned long p, const int *seed, const int seedLen, const std::vector<std::string> files, unsigned char* buffer);
 
 };
 

@@ -1,36 +1,55 @@
-/**************************************************************
+/***************************************************************************
  *
  * Local sampler with probe compleity p. Samples p bytes 
- * from a key X of length n bytes where X is a represented as a 
- * matrix with c rows and n/c columns .
- * 
- **************************************************************/
+ * from a key X of length n bytes where X is represented as a 
+ * matrix with c rows and n/c columns sunject to the constraint 
+ * that c divides p without remainder and that n, c and p and 
+ * +ve integers
+ * Assume that the input binary formatfiles containing the key X have 
+ * variable length but that the total number of bytes in all the files is n. 
+ * This recipe implements a random access facility for reading 
+ * data from random ranges of bytes in the files. 
+ *
+ ***************************************************************************/
+
 #include "LocalSampler.h"
 #include "FileOps.h"
 #include "BLASTMatrix.h"
 
-int LocalSampler::sample(const unsigned long n, const unsigned long p, const std::vector<long> seed, const std::vector<std::string> files, unsigned char* buffer)
+unsigned long LocalSampler::sample(const unsigned long n, const unsigned long p, const int *seed, const int seedLen, const std::vector<std::string> files, unsigned char* buffer)
 {
 
   FileOps fops;
+  unsigned long totalGenBytes = 0;
 
-  if( p % seed.size()) // c should divide p without remainder
+  if( p % seedLen) // c should divide p without remainder
     return EXIT_FAILURE;
 
-  if( n <=0 || p <=0 || seed.size() <= 0)
+  if( n <=0 || p <=0 || seedLen <= 0) // from the set of natural numbers excl. zero
     return EXIT_FAILURE;
   
   std::vector<FileToKeyByteMap> keyMap;
+  for(int i = 0; i < seedLen; i++)
+    {
+      if(seed[i] >= n / seedLen)
+	return EXIT_FAILURE;
+    }
+
   fops.populateKeyMap(files.size(), keyMap);
   fops.fileChecks(files, keyMap);
+  BLASTMatrix bm(n, seedLen);  
 
-  BLASTMatrix bm(n, seed.size());
-  bm.readModularRange(5, 2, 0, keyMap, buffer);
+  for(int i = 0; i < seedLen; i++)
+    {
+      
+      bm.readModularRange(seed[i], p/seedLen, i, keyMap, buffer + totalGenBytes);
+      totalGenBytes += p/seedLen;
+      
+    }
 
-
-  return EXIT_SUCCESS;
-
-}
+  return totalGenBytes;
+  
+}  
 
 
 
