@@ -7,7 +7,7 @@ The seeds are computationally secure in the sense that their security is based o
 
 The IND-CCA game used in the reductions is a hybrid consisting of 
 
-(i) A computationally bounded adversary A_1 that capable of making adaptive oracle queries to learn linear functions of the key (recall that the encryption scheme implemented by the encryption oracle is an XOR of the message and extracted bits) 
+(i) A computationally bounded/PPT adversary A_1 that capable of making adaptive oracle queries to learn linear functions of the key (recall that the encryption scheme implemented by the encryption oracle is an XOR of the message and extracted bits) 
 
 (ii) A computationally unbounded Information Theoretic adversary A_2 that is given the seed after access to the shared server T is removed. The security reduction utilizes linear algebra based arguments. 
 
