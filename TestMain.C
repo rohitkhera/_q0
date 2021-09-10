@@ -195,14 +195,14 @@ int BLASTMatrixTest8()
   FileOps fops;
   unsigned char data[] = { 0xba, 0x4f, 0x20, 0x3b };
   unsigned char buffer[] = { 0x00, 0x00, 0x00, 0x00 };
-  int buflen = 4;
+
 
   std::vector<FileToKeyByteMap> keyMap;
   fops.populateKeyMap(fileset2.size(), keyMap);
   fops.fileChecks(fileset2, keyMap);
 
   BLASTMatrix bm(35, 5);
-  bm.readLinearRange(3, 6, 2, keyMap, buffer, buflen);
+  bm.readLinearRange(3, 6, 2, keyMap, buffer);
 
   int n = memcmp(data, buffer, sizeof(buffer));
   if(n != 0)
@@ -222,14 +222,13 @@ int BLASTMatrixTest9()
   FileOps fops;
   unsigned char data[] = { 0xb8, 0x08 };
   unsigned char buffer[] = { 0x00, 0x00 };
-  int buflen = 2;
 
   std::vector<FileToKeyByteMap> keyMap;
   fops.populateKeyMap(fileset2.size(), keyMap);
   fops.fileChecks(fileset2, keyMap);
 
   BLASTMatrix bm(35, 5);
-  bm.readLinearRange(0, 1, 3, keyMap, buffer, buflen);
+  bm.readLinearRange(0, 1, 3, keyMap, buffer);
 
   int n = memcmp (data, buffer, sizeof(buffer));
   if(n != 0)
@@ -249,15 +248,94 @@ int BLASTMatrixTest10()
   FileOps fops;
   unsigned char data[] = { 0xee, 0x5b, 0x44,0x70, 0xe6, 0xab, 0x52 };
   unsigned char buffer[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-  int buflen = 2;
+
 
   std::vector<FileToKeyByteMap> keyMap;
   fops.populateKeyMap(fileset2.size(), keyMap);
   fops.fileChecks(fileset2, keyMap);
 
   BLASTMatrix bm(35, 5);
-  bm.readLinearRange(0, 6, 4, keyMap, buffer, buflen);
+  bm.readLinearRange(0, 6, 4, keyMap, buffer);
 
+  int n = memcmp (data, buffer, sizeof(buffer));
+  if(n != 0)
+    return EXIT_FAILURE;
+  
+  return EXIT_SUCCESS;
+
+}
+
+/* Read 6 bytes starting from the 4th position in the 4th row */
+
+int BLASTMatrixTest11()
+{
+
+
+  FileOps fops;
+  unsigned char data[] = { 0xe6, 0xab, 0x52, 0xee, 0x5b, 0x44 };
+  unsigned char buffer[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  bm.readModularRange(4, 6, 4, keyMap, buffer);
+  
+  int n = memcmp (data, buffer, sizeof(buffer));
+  if(n != 0)
+    return EXIT_FAILURE;
+  
+  return EXIT_SUCCESS;
+
+}
+
+/* Read 6 bytes starting from the 6th position in the 4th row */
+
+int BLASTMatrixTest12()
+{
+
+
+  FileOps fops;
+  unsigned char data[] = { 0x52, 0xee, 0x5b, 0x44, 0x70, 0xe6 };
+  unsigned char buffer[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  bm.readModularRange(6, 6, 4, keyMap, buffer);
+  
+  int n = memcmp (data, buffer, sizeof(buffer));
+  if(n != 0)
+    return EXIT_FAILURE;
+  
+  return EXIT_SUCCESS;
+
+}
+
+
+/* Read 3 bytes starting from the 5th position in the 1st row */
+
+int BLASTMatrixTest13()
+{
+
+
+  FileOps fops;
+  unsigned char data[] = { 0x7c, 0x79, 0x3b };
+  unsigned char buffer[] = { 0x00, 0x00, 0x00 };
+
+
+  std::vector<FileToKeyByteMap> keyMap;
+  fops.populateKeyMap(fileset2.size(), keyMap);
+  fops.fileChecks(fileset2, keyMap);
+
+  BLASTMatrix bm(35, 5);
+  bm.readModularRange(5, 3, 1, keyMap, buffer);
+  
   int n = memcmp (data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
@@ -457,7 +535,16 @@ int main(int argc, char **argv)
 
   std::cout << "BLASTMatrixTest10" << std::endl;  
   assert(BLASTMatrixTest10() == EXIT_SUCCESS);
-    
+
+  std::cout << "BLASTMatrixTest11" << std::endl;  
+  assert(BLASTMatrixTest11() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest12" << std::endl;  
+  assert(BLASTMatrixTest12() == EXIT_SUCCESS);
+
+  std::cout << "BLASTMatrixTest13" << std::endl;  
+  assert(BLASTMatrixTest13() == EXIT_SUCCESS);
+  
   std::cout << "----------- END TESTS ------------\n" << std::endl;
   return 0;
 

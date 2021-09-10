@@ -23,11 +23,15 @@ typedef struct FileToKeyByteMap
   long endByteIndex;
 
   long file_sz;
+
   void print() const;
+
   unsigned char getNthByte(const std::string filename, const long n);
 
   FileToKeyByteMap(const FileToKeyByteMap &map) { filename = map.filename; startByteIndex = map.startByteIndex; endByteIndex = map.endByteIndex; }
+
   FileToKeyByteMap() { filename = ""; startByteIndex = 0; endByteIndex = 0; }
+  
 } FileToKeyByteMap;
 
 
@@ -35,8 +39,11 @@ typedef struct FileToKeyByteMap
 class FileOps
 {
 public:
+
   FileOps() {};
+
   long fileChecks(const std::vector<std::string> fileNames, std::vector<FileToKeyByteMap>& keyMap);
+
   void populateKeyMap(const long n, std::vector<FileToKeyByteMap>& keyMap);  
   
 };
