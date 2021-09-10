@@ -123,15 +123,6 @@ int BLASTMatrix::readLinearRange(const unsigned long startIndex, const unsigned 
       if(outMap[i].endByteIndex <= linearEndIndex) //Entirely read the residual range in this file
 	{
 	  len = fread(buffer + curBufferIndex, 1, outMap[i].endByteIndex - fileStartIndex + 1, fp);
-	  /*
-	  std::cout << "---------------------------------------" << std::endl;
-	  std::cout << "linearStartIndex : " << linearStartIndex << std::endl;	  
-	  std::cout << "linearEndIndex : " << linearEndIndex << std::endl;
-	  std::cout << "outMap[i].endByteIndex : " << outMap[i].endByteIndex << std::endl;	  	  
-	  std::cout << "ReadStart = " << readStart << " : len " << len << " : curBufferIndex " << curBufferIndex << std::endl;
-	  std::cout << "outMap[i].endByteIndex : " << outMap[i].endByteIndex << " : fileStartIndex : " << fileStartIndex << std::endl;
-	  */
-
 	  fileStartIndex += len;
 	  curBufferIndex += len;
 	  
