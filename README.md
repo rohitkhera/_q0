@@ -33,12 +33,19 @@ An example test case is depicted below
 The sampler reads and concatenates bytes from each row in the above matrix based on the following seed vector { 5, 0, 2, 6, 4 }. The memory complexity for the sampler is O(p) and the data is read from the following input files of unequal length:
 
 KeyData_0.dat - containing 4 bytes
+
 KeyData_1.dat - containing 7 bytes
+
 KeyData_2.dat - containing 3 bytes
+
 KeyData_3.dat - containing 5 bytes
+
 KeyData_4.dat - containing 2 bytes
+
 KeyData_5.dat - containing 1 byte
+
 KeyData_6.dat - containing 8 bytes
+
 KeyData_7.dat - containing 5 bytes
 
 
