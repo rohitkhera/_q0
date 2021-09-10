@@ -2,10 +2,10 @@
  *
  * Local sampler with probe compleity p. Samples p bytes 
  * from a key X of length n bytes where X is represented as a 
- * matrix with c rows and n/c columns sunject to the constraint 
+ * matrix with c rows and n/c columns subject to the constraint 
  * that c divides p without remainder and that n, c and p and 
  * +ve integers
- * Assume that the input binary formatfiles containing the key X have 
+ * Assume that the input binary format files containing the key X have 
  * variable length but that the total number of bytes in all the files is n. 
  * This recipe implements a random access facility for reading 
  * data from random ranges of bytes in the files. 
@@ -20,7 +20,7 @@ unsigned long LocalSampler::sample(const unsigned long n, const unsigned long p,
 {
 
   FileOps fops;
-  unsigned long totalGenBytes = 0;
+  unsigned long totalSampledBytes = 0;
 
   if( p % seedLen) // c should divide p without remainder
     return EXIT_FAILURE;
@@ -42,12 +42,12 @@ unsigned long LocalSampler::sample(const unsigned long n, const unsigned long p,
   for(int i = 0; i < seedLen; i++)
     {
       
-      bm.readModularRange(seed[i], p/seedLen, i, keyMap, buffer + totalGenBytes);
-      totalGenBytes += p/seedLen;
+      bm.readModularRange(seed[i], p/seedLen, i, keyMap, buffer + totalSampledBytes);
+      totalSampledBytes += p/seedLen;
       
     }
 
-  return totalGenBytes;
+  return totalSampledBytes;
   
 }  
 
