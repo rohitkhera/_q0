@@ -15,14 +15,14 @@
  * returns the total numner of bytes in the file 
  */
 
-long FileOps::fileChecks(const std::vector<std::string> filenames, std::vector<FileToKeyByteMap>& keyMap)
+unsigned long FileOps::fileChecks(const std::vector<std::string> filenames, std::vector<FileToKeyByteMap>& keyMap)
 {
 
-  long total_sz = 0;
+  unsigned long total_sz = 0;
   FILE *fp = NULL;
   int num = filenames.size();
   
-  long lastIndex = 0;
+  unsigned long lastIndex = 0;
     for(int i = 0; i < num; i++)
     {
       fp = fopen(filenames[i].c_str(), "r");
@@ -52,7 +52,7 @@ long FileOps::fileChecks(const std::vector<std::string> filenames, std::vector<F
   
 }
 
-void FileOps::populateKeyMap(const long n, std::vector<FileToKeyByteMap>& keyMap)
+void FileOps::populateKeyMap(const unsigned long n, std::vector<FileToKeyByteMap>& keyMap)
 {
 
   FileToKeyByteMap maps[n];
@@ -70,7 +70,7 @@ void FileToKeyByteMap::print() const
   
 }
 
-unsigned char FileToKeyByteMap::getNthByte(const std::string filename, const long n)
+unsigned char FileToKeyByteMap::getNthByte(const std::string filename, const unsigned long n)
 {
 
   FILE*fp = NULL;
