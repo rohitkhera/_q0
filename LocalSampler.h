@@ -9,15 +9,15 @@
 #define HDR_BLAST_SAMPLER_H 
 
 #include <vector>
+#include <string>
 
-using namespace std;
 
 class LocalSampler
 {
 
  public:
   LocalSampler() {};
-  unsigned char* sample(int p, vector<long> seed);
+  int sample(const unsigned long n, const unsigned long p, const std::vector<long> seed, const std::vector<std::string> files, unsigned char* buffer);
 
 };
 

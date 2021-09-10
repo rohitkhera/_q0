@@ -1,6 +1,5 @@
 5 by 7 matrix constructed from files corresponding to n = 35 and c = 5
 
-
            |        
 a4 cf dd 84 f4 b8 48
 
@@ -11,7 +10,7 @@ a4 cf dd 84 f4 b8 48
 2c 7f fd ba 4f 20 3b 
 
   !                 
-b8 08 65 2b 16 a6 5b
+b8 08 65 2b 16 a6 5b  
 
      |              |
-ee 5b 44 70 e6 ab 52
+ee 5b 44 70 e6 ab 52   
