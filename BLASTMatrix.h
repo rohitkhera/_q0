@@ -13,24 +13,24 @@ class BLASTMatrix
   
 public:
 
-  BLASTMatrix(const long n, const long c) : n(n), c(c), columns(n/c) {};
+  BLASTMatrix(const unsigned long n, const unsigned long c) : n(n), c(c), columns(n/c) {};
 
-  unsigned char readIthByte(const long index, const std::vector<FileToKeyByteMap>& keyMap);
+  unsigned char readIthByte(const unsigned long index, const std::vector<FileToKeyByteMap>& keyMap);
 
-  unsigned char IthByteInJthRow(const long index, const long row, const std::vector<FileToKeyByteMap>& keyMap);
+  unsigned char IthByteInJthRow(const unsigned long index, const unsigned long row, const std::vector<FileToKeyByteMap>& keyMap);
 
-  int readLinearRange(const long startindex, const long endIndex, const long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer);
+  int readLinearRange(const unsigned long startindex, const unsigned long endIndex, const unsigned long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer);
 
-  int readModularRange(const long startIndex, const long len, const long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer);
+  int readModularRange(const unsigned long startIndex, const unsigned long len, const unsigned long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer);
 
-  void getFileMapsforByteRange(const long linearStartIndex, const long linearEndIndex, const std::vector<FileToKeyByteMap>& inMap, std::vector<FileToKeyByteMap>& outMap);
+  void getFileMapsforByteRange(const unsigned long linearStartIndex, const unsigned long linearEndIndex, const std::vector<FileToKeyByteMap>& inMap, std::vector<FileToKeyByteMap>& outMap);
 
 private:
 
   BLASTMatrix() {};
-  long n;
-  long c;
-  long columns;
+  unsigned long n;
+  unsigned long c;
+  unsigned long columns;
   
 };  
 

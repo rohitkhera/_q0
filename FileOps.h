@@ -18,15 +18,15 @@ typedef struct FileToKeyByteMap
   std::string filename;
 
   /* index in the key that corresponds to the first byte in this file */ 
-  long startByteIndex;
+  unsigned long startByteIndex;
   /* index in the key that corresponds to the last byte in this file */ 
-  long endByteIndex;
+  unsigned long endByteIndex;
 
-  long file_sz;
+  unsigned long file_sz;
 
   void print() const;
 
-  unsigned char getNthByte(const std::string filename, const long n);
+  unsigned char getNthByte(const std::string filename, const unsigned long n);
 
   FileToKeyByteMap(const FileToKeyByteMap &map) { filename = map.filename; startByteIndex = map.startByteIndex; endByteIndex = map.endByteIndex; }
 
@@ -42,9 +42,9 @@ public:
 
   FileOps() {};
 
-  long fileChecks(const std::vector<std::string> fileNames, std::vector<FileToKeyByteMap>& keyMap);
+  unsigned long fileChecks(const std::vector<std::string> fileNames, std::vector<FileToKeyByteMap>& keyMap);
 
-  void populateKeyMap(const long n, std::vector<FileToKeyByteMap>& keyMap);  
+  void populateKeyMap(const unsigned long n, std::vector<FileToKeyByteMap>& keyMap);  
   
 };
 

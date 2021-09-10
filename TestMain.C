@@ -185,8 +185,8 @@ int BLASTMatrixTest6()
   fops.fileChecks(fileset2, keyMap);
 
   BLASTMatrix bm(35, 5);
-  long linearStartIndex = (2 * 7) + 3; // (row * col) + startIndex;
-  long linearEndIndex = (2 * 7) + 6; // (row * col) + endIndex;
+  unsigned long linearStartIndex = (2 * 7) + 3; // (row * col) + startIndex;
+  unsigned long linearEndIndex = (2 * 7) + 6; // (row * col) + endIndex;
   
   std::vector<FileToKeyByteMap> outMap;
   bm.getFileMapsforByteRange(linearStartIndex, linearEndIndex, keyMap, outMap);
@@ -217,8 +217,8 @@ int BLASTMatrixTest7()
   fops.fileChecks(fileset2, keyMap);
 
   BLASTMatrix bm(35, 5);
-  long linearStartIndex = (3 * 7) + 0; // (row * col) + startIndex;
-  long linearEndIndex = (3 * 7) + 0; // (row * col) + endIndex;
+  unsigned long linearStartIndex = (3 * 7) + 0; // (row * col) + startIndex;
+  unsigned long linearEndIndex = (3 * 7) + 0; // (row * col) + endIndex;
   
   std::vector<FileToKeyByteMap> outMap;
   bm.getFileMapsforByteRange(linearStartIndex, linearEndIndex, keyMap, outMap);
@@ -451,7 +451,7 @@ int BLASTMatrixTest15()
 
 /* Ensure that the total size of the file is n bytes */
 
-int fileOpsTest0(const long n)
+int fileOpsTest0(const unsigned long n)
 {
   FileOps fops;
 

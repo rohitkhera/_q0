@@ -8,7 +8,7 @@
 
 /* read the ith byte in the key */
 
-unsigned char BLASTMatrix::readIthByte(const long index, const std::vector<FileToKeyByteMap>& keyMap)
+unsigned char BLASTMatrix::readIthByte(const unsigned long index, const std::vector<FileToKeyByteMap>& keyMap)
 {
 
   const FileToKeyByteMap *map = NULL;
@@ -50,16 +50,16 @@ unsigned char BLASTMatrix::readIthByte(const long index, const std::vector<FileT
 }
 
 
-unsigned char BLASTMatrix::IthByteInJthRow(const long index, const long row, const std::vector<FileToKeyByteMap>& keyMap)
+unsigned char BLASTMatrix::IthByteInJthRow(const unsigned long index, const unsigned long row, const std::vector<FileToKeyByteMap>& keyMap)
 {
 
-  long linearIndex = (row * columns) + index;
+  unsigned long linearIndex = (row * columns) + index;
   return readIthByte(linearIndex, keyMap);
 
 }
 
 
-void BLASTMatrix::getFileMapsforByteRange(const long linearStartIndex, const long linearEndIndex, const std::vector<FileToKeyByteMap>& inMap, std::vector<FileToKeyByteMap>& outMap)
+void BLASTMatrix::getFileMapsforByteRange(const unsigned long linearStartIndex, const unsigned long linearEndIndex, const std::vector<FileToKeyByteMap>& inMap, std::vector<FileToKeyByteMap>& outMap)
 {
 
   /* Find the start file for the linear range*/
@@ -93,13 +93,13 @@ void BLASTMatrix::getFileMapsforByteRange(const long linearStartIndex, const lon
 
 /* The semnatics of this function require that it not  receive an end index that overshoots the row */
 
-int BLASTMatrix::readLinearRange(const long startIndex, const long endIndex, const long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer)
+int BLASTMatrix::readLinearRange(const unsigned long startIndex, const unsigned long endIndex, const unsigned long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer)
 {
 
-  long linearStartIndex = (row * columns) + startIndex;
-  long linearEndIndex = (row * columns) + endIndex;
-  long fileStartIndex = linearStartIndex;
-  long curBufferIndex = 0;
+  unsigned long linearStartIndex = (row * columns) + startIndex;
+  unsigned long linearEndIndex = (row * columns) + endIndex;
+  unsigned long fileStartIndex = linearStartIndex;
+  unsigned long curBufferIndex = 0;
   std::vector<FileToKeyByteMap> outMap;
 
   
@@ -117,7 +117,7 @@ int BLASTMatrix::readLinearRange(const long startIndex, const long endIndex, con
 	}
 
 
-      long readStart = fileStartIndex - outMap[i].startByteIndex;
+      unsigned long readStart = fileStartIndex - outMap[i].startByteIndex;
       size_t len = 0;
       fseek(fp, readStart, SEEK_SET); 
       if(outMap[i].endByteIndex <= linearEndIndex) //Entirely read the residual range in this file
@@ -146,16 +146,16 @@ int BLASTMatrix::readLinearRange(const long startIndex, const long endIndex, con
 
 }
 
-int BLASTMatrix::readModularRange(const long startIndex, const long numBytes, const long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer)
+int BLASTMatrix::readModularRange(const unsigned long startIndex, const unsigned long numBytes, const unsigned long row, const std::vector<FileToKeyByteMap>& keyMap, unsigned char* buffer)
 {
 
   size_t len = 0;
   if(startIndex + numBytes > columns)
     {
 
-      long resLen = columns - startIndex;
+      unsigned long resLen = columns - startIndex;
       readLinearRange(startIndex, columns, row, keyMap, buffer);
-      long wrappedLastIndex = numBytes - (columns - startIndex);
+      unsigned long wrappedLastIndex = numBytes - (columns - startIndex);
 
       readLinearRange(0, wrappedLastIndex, row, keyMap, buffer + resLen); 
 
