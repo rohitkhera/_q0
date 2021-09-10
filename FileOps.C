@@ -6,15 +6,6 @@
 #include "FileOps.h"
 #include <iostream>
 
-/*
- * Check basic properties of files containing the key data
- * Args: 
- * vector<string> filenames
- * vector<struct FileToKeyByteMap> - mapping of bytes in a file to 
- * byte ranges in the key populated by this function
- * returns the total numner of bytes in the file 
- */
-
 unsigned long FileOps::fileChecks(const std::vector<std::string> filenames, std::vector<FileToKeyByteMap>& keyMap)
 {
 
