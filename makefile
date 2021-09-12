@@ -8,7 +8,7 @@ OPENSSL_DIR=openssl-1.1.1l/install
 
 INCLUDES=-I$(OPENSSL_DIR)/include
 
-CFLAGS=-g $(INCLUDES)
+CFLAGS=-g $(INCLUDES) -fPIC
 
 AR=ar
 
