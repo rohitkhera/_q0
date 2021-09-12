@@ -70,7 +70,7 @@ int BLASTMatrixTest1()
 {
   
   FileToKeyByteMap map;
-  unsigned char c = map.getNthByte("keyData/small/KeyData_5.dat", 0);
+  unsigned char c = map.getNthByte("keydata/small/KeyData_5.dat", 0);
 
   if(c != 0xb8 )
     return EXIT_FAILURE;
@@ -505,7 +505,7 @@ int fileOpsTest2()
 {
 
   FileToKeyByteMap map;
-  unsigned char c = map.getNthByte("keyData/KeyData_0.dat", 199999);
+  unsigned char c = map.getNthByte("keydata/KeyData_0.dat", 199999);
   if(c != 'f')
     return EXIT_FAILURE;
 
