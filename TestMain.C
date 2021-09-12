@@ -54,7 +54,7 @@ int BLASTMatrixTest0()
   LocalSampler ls;
   unsigned long total = ls.sample(35, 15, seed, 5, fileset2, buffer);
   
-  int n = memcmp (data, buffer, sizeof(buffer));
+  int n = mymemcmp (data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
   
@@ -254,7 +254,7 @@ int BLASTMatrixTest8()
   BLASTMatrix bm(35, 5);
   bm.readLinearRange(3, 6, 2, keyMap, buffer);
 
-  int n = memcmp(data, buffer, sizeof(buffer));
+  int n = mymemcmp(data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
 
@@ -280,7 +280,7 @@ int BLASTMatrixTest9()
   BLASTMatrix bm(35, 5);
   bm.readLinearRange(0, 1, 3, keyMap, buffer);
 
-  int n = memcmp (data, buffer, sizeof(buffer));
+  int n = mymemcmp (data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
   
@@ -307,7 +307,7 @@ int BLASTMatrixTest10()
   BLASTMatrix bm(35, 5);
   bm.readLinearRange(0, 6, 4, keyMap, buffer);
 
-  int n = memcmp (data, buffer, sizeof(buffer));
+  int n = mymemcmp (data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
   
@@ -333,7 +333,7 @@ int BLASTMatrixTest11()
   BLASTMatrix bm(35, 5);
   bm.readModularRange(4, 6, 4, keyMap, buffer);
   
-  int n = memcmp (data, buffer, sizeof(buffer));
+  int n = mymemcmp (data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
   
@@ -359,7 +359,7 @@ int BLASTMatrixTest12()
   BLASTMatrix bm(35, 5);
   bm.readModularRange(6, 6, 4, keyMap, buffer);
   
-  int n = memcmp (data, buffer, sizeof(buffer));
+  int n = mymemcmp (data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
   
@@ -386,7 +386,7 @@ int BLASTMatrixTest13()
   BLASTMatrix bm(35, 5);
   bm.readModularRange(5, 3, 1, keyMap, buffer);
   
-  int n = memcmp (data, buffer, sizeof(buffer));
+  int n = mymemcmp (data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
   
@@ -412,7 +412,7 @@ int BLASTMatrixTest14()
   BLASTMatrix bm(35, 5);
   bm.readModularRange(1, 4, 3, keyMap, buffer);
   
-  int n = memcmp (data, buffer, sizeof(buffer));
+  int n = mymemcmp (data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
   
@@ -438,7 +438,7 @@ int BLASTMatrixTest15()
   BLASTMatrix bm(35, 5);
   bm.readModularRange(5, 2, 0, keyMap, buffer);
   
-  int n = memcmp (data, buffer, sizeof(buffer));
+  int n = mymemcmp (data, buffer, sizeof(buffer));
   if(n != 0)
     return EXIT_FAILURE;
   
@@ -662,7 +662,16 @@ int main(int argc, char **argv)
 }
   
 
+int mymemcmp(unsigned char *buf1, unsigned char *buf2, size_t len)
+{
 
+  for(int i = 0; i < len; i++)
+    if(buf1[i] != buf2[i])
+      return -1;
+
+  return 0;
+
+}
 
 
 

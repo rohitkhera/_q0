@@ -20,17 +20,19 @@ SO_FLAGS=-shared
 
 HDRS=LocalSampler.h \
 	FileOps.h \
-	BLASTMatrix.h
+	BLASTMatrix.h 
+
 
 SRCS=LocalSampler.C \
 	FileOps.C \
 	TestMain.C \
-	BLASTMatrix.C
+	BLASTMatrix.C \
+
 
 OBJS=LocalSampler.o \
 	FileOps.o \
 	TestMain.o \
-	BLASTMatrix.o
+	BLASTMatrix.o 
 
 
 ##############################################
@@ -41,7 +43,9 @@ SHARED_OBJ=libsampler.so
 
 TEST=sampler_test
 
-TARGETS=$(SHARED_OBJ) $(TEST)
+DOUT=dout
+
+TARGETS=$(SHARED_OBJ) $(TEST) $(DOUT)
 
 all:
 	make $(TARGETS)
@@ -57,6 +61,8 @@ $(SHARED_OBJ): $(OBJS)
 $(TEST): $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TEST) -L./ -lsampler
 
+$(DOUT): WriteBin.o
+	$(CC) $(CFLAGS) $(LDFLAGS) WriteBin.o -o $(DOUT)
 
 clean:
 	@rm -rf *.o $(TARGETS)
