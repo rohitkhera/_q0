@@ -65,11 +65,20 @@ This implementation does not incorporate countermeasures against potential timin
 Build 
 
 Pre-requisites: g++ and make
+
 Download this repo and cd in the directory _q0 and type make.
-Then run the tests by entering the following on the command line 
+
+Then run the tests by entering the following on the command line :
 ./sampler_test
 
 You may be required to add the current directory (_q0) to your LD_LIBRARY_PATH environment variable 
+
+On architectures other than OSX you may be required to generate the binary test files prior to running
+
+the tests. This may be done my compiling the project and running the following command  prior to running
+
+the tests :
+./dout
 
 Testing
 
