@@ -1,9 +1,17 @@
 Overview and Security Definitions
 
-The code in this repo implements a local sampler in the the BLAST “sample and extract” paradigm where p where bits are sampled from a key X (based on a computationally secure seed of length c), and subsequently used by a non local extractor to compute one time encryption pads. 
-The seeds are computationally secure in the sense that their security is based on the following computational assumptions (i) Decision Diffie Hellman (DDH) / Computational Diffie Hellman (CDH) (ii) the existence of pseudo random generators whose output is indistinguishable from random for PPT adversaries. 
-The IND-CCA game used in the reductions is a hybrid consisting of (1) A computationally bounded adversary A_1 that capable of making adaptive oracle queries to learn linear functions of the key (recall that the encryption scheme implemented by the encryption oracle is an XOR of the message and extracted bits) (2) A computationally unbounded Information Theoretic adversary A_2 that is given the seed after access to the shared server T is removed. The security reduction utilizes linear algebra based arguments. 
-During the extraction phase (not implemented here), the goal is to take non random (leaked) and random bits in the sample and mix them to produce a truly random string. The extraction method utilized is able to extract more entropy (more extracted random bits) from the sample than what is implied by the leftover hash lemma given some bounded amount of leakage of the sampled bits 
+The code in this repo implements a local sampler in the BLAST “sample and extract” paradigm where p bits are sampled from a key X (based on a computationally secure seed of length c), and subsequently used by a non local extractor to compute one time encryption pads. 
+The seeds are computationally secure in the sense that their security is based on the following computational assumptions 
+(i) Decision Diffie Hellman (DDH) / Computational Diffie Hellman (CDH) 
+(ii) The existence of pseudo random generators whose output is indistinguishable from random for PPT adversaries. 
+
+The IND-CCA game used in the reductions is a hybrid consisting of 
+
+(i) A computationally bounded/PPT adversary A_1 that's capable of making adaptive oracle queries to learn linear functions of the key (recall that the encryption scheme implemented by the encryption oracle is an XOR of the message and extracted bits) 
+
+(ii) A computationally unbounded Information Theoretic adversary A_2 that is given the seed after access to the shared server T is removed. The security reduction utilizes linear algebra based arguments. 
+
+During the extraction phase (not implemented here), the goal is to take non random (leaked) and random bits in the sample and mix them to produce a truly random string. The recipe for the extractor involves instantiating a family of matrices  A_1, . . . , A_m and computing an extraction as the dot product X ·(A_1S), . . . , X ·(A_mS) where A_iS is the matrix-vector product of the ith matrix and the seed S. The underlying arithmetic is field multiplication, presumably over some fixed representation of GF(256) since the underlying data is represented as bytes. It's stated that the extraction method utilized is able to extract more entropy (more extracted random bits) from the sample than what is implied by the leftover hash lemma given some bounded amount of leakage of the sampled bits 
 
 Implementation 
 
@@ -30,15 +38,22 @@ An example test case is depicted below
 
    ee 5b 44 70 e6 ab 52   
 
-The sampler reads and concatenates bytes from each row in the above matrix based on the following seed vector { 5, 0, 2, 6, 4 }. The memory complexity for the sampler is O(p) and the data is read of the following input files of unequal length:
+The sampler reads and concatenates bytes from each row in the above matrix based on the following seed vector { 5, 0, 2, 6, 4 } (You may confirm that the correct sample for the above scenario is given by the 15 element vector { 0xb8, 0x48, 0xa4, 0x3b, 0x1f, 0x8a, 0xfd, 0xba, 0x4f, 0x5b, 0xb8, 0x08, 0xe6, 0xab, 0x52 }). The memory complexity for the sampler is O(p) and the data is read from the following input files of unequal length:
 
 KeyData_0.dat - containing 4 bytes
+
 KeyData_1.dat - containing 7 bytes
+
 KeyData_2.dat - containing 3 bytes
+
 KeyData_3.dat - containing 5 bytes
+
 KeyData_4.dat - containing 2 bytes
+
 KeyData_5.dat - containing 1 byte
+
 KeyData_6.dat - containing 8 bytes
+
 KeyData_7.dat - containing 5 bytes
 
 
